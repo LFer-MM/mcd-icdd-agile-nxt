@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 #import nxt.locator
 
 app = Flask(__name__)
@@ -7,38 +7,39 @@ app = Flask(__name__)
 def home():
    return render_template('nxt_rc.html')
 
-
-@app.route('/check_connectivity', methods=['GET', 'POST'])
+@app.route('/check_connectivity', methods=['GET'])
 def check_connectivity():
 
-    """
-    # Codigo de ejemplo de NXT Python, por lo pronto por USB
-    with nxt.locator.find() as b:
-        print("Found brick:", b.get_device_info()[0])
-        b.play_tone(440, 250)
-    """
+    # TODO: Logica con NXT-Python para conectar con controller brick y emitir sonido de confirmacion
+    connection_status = True # Placeholder para el valor de estado de comunicacion
+    rsp = {"connection_status":connection_status}
 
-    return ("Se busco el brick.")
+    return (jsonify(rsp), 200)
 
-@app.route('/scan_color', methods=['GET', 'POST'])
+@app.route('/move', methods=['POST'])
+def move():
+
+    direction = request.json['direction']
+
+    # TODO: Logica con NXT-Python para poner a chambear a los motores de movimiento en la direccion solicitada
+    # por una cantidad fija de tiempo (nosotros podemos definir los steps por click del boton para no batallar)
+    return (f"{direction} movement request sent to controller brick", 200)
+
+@app.route('/scan_color', methods=['GET'])
 def scan_color():
 
-    """
-    with nxt.locator.find() as b:
-        color_scanner_sensor = b.get_sensor(nxt.sensor.Port.S4)
-        color = color_scanner_sensor.get_sample()
-        print(color) # El color detectado iria al BOX al centro del sitio web, o algun otro indicador que demos de alta
-    """
+    # TODO: Logica con NXT-Python para detectar color con el sensor y enviar el valor rgb/hexa de regreso
+    detected_color = "#4842f5" # Placeholder para el valor que obtendremos del sensor y se mostrara en la GUI
+    rsp = {"detected_color":detected_color}
 
-    return ("Se detecto color.")
+    return (jsonify(rsp), 200)
 
-@app.route('/shoot', methods=['GET', 'POST'])
+@app.route('/shoot', methods=['GET'])
 def shoot():
 
-    # TODO: Agregar logica NXT
+    # TODO: Logica con NXT-Python para activar el motor que activa el mecanismo de disparo
 
-    return ("Abrazos no balazos")
-
+    return (jsonify({"abrazos":True, "balazos":False}), 200)
 
 if __name__ == '__main__':
     app.run(debug=True)

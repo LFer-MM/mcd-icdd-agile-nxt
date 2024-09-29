@@ -5,36 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/nxt_rc.css')}}">
     <title>NXT Remote Control</title>
+    <script src="{{ url_for('static', filename='js/fetching.js')}}"></script>
 </head>
 <body>
 
     <div class="action-buttons">
 
-        <form action="/check_connectivity" method="post">
-            <button type="submit" value="check_connectivity">Check Brick Connectivity</button>
-        </form>
-
-        <form action="/scan_color" method="post">
-            <button type="submit" value="scan_color">Scan Color</button>
-        </form>
-
-        <form action="/shoot" method="post">
-            <button type="submit" value="shoot">Shooooooooot</button>
-        </form>
-
-        <form action="/nolohagaswe" method="post"></form>
-            <button type="submit" value="?">?</button>
-        </form>
+        <button onclick="check_connectivity()">Check Brick Connectivity</button>
+        <button onclick="scan_color()">Scan Color</button>
+        <button onclick="shoot()">Shooooooooot</button>
+        <button>?</button>
 
     </div>
 
-    <div class="scanned-color-box">
-        <img src="{{ url_for('static', filename='images/mcd_logo.png') }}" alt="mcd-logo">
+    <div>
+
+        <div class="mcd-logo">
+            <img src="{{ url_for('static', filename='images/mcd_logo.png') }}" alt="mcd-logo">
+        </div>
+
+        <div class="connection-status"> Not Connected </div>
+
+        <div class="scanned-color-box"></div>
+
     </div>
 
     <div class="movement-buttons">
-        <button>↑</button>
-        <button>↓</button>
+        <button onclick="move('forward')">↑</button>
+        <button onclick="move('backward')">↓</button>
     </div>
 
 </body>
