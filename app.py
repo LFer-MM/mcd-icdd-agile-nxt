@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-#import nxt.locator
+import nxt.locator
 
 app = Flask(__name__)
 
@@ -21,8 +21,19 @@ def move():
 
     direction = request.json['direction']
 
-    # TODO: Logica con NXT-Python para poner a chambear a los motores de movimiento en la direccion solicitada
-    # por una cantidad fija de tiempo (nosotros podemos definir los steps por click del boton para no batallar)
+    try:
+        b = nxt.locator.find()
+
+        motor1 = b.get_motor(nxt.motor.Port.A)
+        motor2 = b.get_motor(nxt.motor.Port.B)
+        syncmot = nxt.motor.SynchronizedMotors(motor1, motor2, 0)
+        if direction == "forward":
+            syncmot.turn(64, 180, timeout=3)
+        else:
+            syncmot.turn(64, -180, timeout=3)
+    except:
+        print("NO BRICK WAS FOUND!")
+
     return (f"{direction} movement request sent to controller brick", 200)
 
 @app.route('/scan_color', methods=['GET'])
